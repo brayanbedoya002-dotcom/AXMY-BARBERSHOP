@@ -1,0 +1,502 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #0d0d0d;
+    background-image: radial-gradient(circle at 50% 30%, #1c1c1c 0%, #080808 100%);
+    color: #f0f0f0;
+    min-height: 100vh;
+    padding-bottom: 60px;
+}
+
+/* === Encabezado / Barbershop Navbar === */
+.navbar {
+    background: #000000;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.scissors-icon {
+    width: 48px;
+    height: 48px;
+    filter: drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3));
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #f5e0a3 0%, #d4af37 50%, #aa7c11 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-sub {
+    font-size: 0.65rem;
+    letter-spacing: 5px;
+    color: #a0a0a0;
+    margin-top: -3px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    transition: color 0.3s;
+}
+
+.nav-links a.active, .nav-links a:hover {
+    color: #d4af37;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.btn-reservar-top {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 8px 18px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-reservar-top:hover {
+    border-color: #d4af37;
+    color: #d4af37;
+}
+
+/* === Layout del Catálogo === */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.main-title {
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #f5e0a3 0%, #d4af37 50%, #aa7c11 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 30px;
+}
+
+@media (max-width: 600px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* === Estilo Marco Dorado Estilo Leather === */
+.service-card {
+    background: linear-gradient(145deg, #1f1d18 0%, #121210 100%);
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7), inset 0 0 15px rgba(212, 175, 55, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(90deg, #b8860b 0%, #d4af37 50%, #b8860b 100%);
+    color: #000;
+    font-family: 'Cinzel', serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    padding: 6px 16px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.card-body {
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    background-image: radial-gradient(#25231c 1px, transparent 1px);
+    background-size: 12px 12px;
+}
+
+.card-image-wrapper {
+    width: 45%;
+    height: 180px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #333;
+}
+
+.card-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1);
+}
+
+.card-details {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.service-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.service-desc {
+    font-size: 0.8rem;
+    color: #aaaaaa;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.price-time {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.price {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #d4af37;
+}
+
+.duration {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.btn-card-reserve {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #d4af37;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-card-reserve:hover {
+    background: #d4af37;
+    color: #000;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+}
+
+.card-footer {
+    background: #0a0a0a;
+    color: #555;
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 4px;
+    border-top: 1px solid #1a1a1a;
+    letter-spacing: 2px;
+}
+
+/* === Floating Chat Widget === */
+.chat-toggle-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+    color: #000;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 15px rgba(212, 175, 55, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 999;
+    transition: transform 0.2s;
+}
+
+.chat-toggle-btn:hover {
+    transform: scale(1.05);
+}
+
+.chat-widget {
+    position: fixed;
+    bottom: 90px;
+    right: 25px;
+    width: 380px;
+    height: 520px;
+    background: #121212;
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.chat-widget.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+}
+
+.chat-header {
+    background: #000;
+    color: #d4af37;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #222;
+}
+
+.chat-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+.close-chat {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #0a0a0a;
+}
+
+.message {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    max-width: 85%;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.user-message {
+    background: #d4af37;
+    color: #000;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+    font-weight: 500;
+}
+
+.bot-message {
+    background: #1c1c1c;
+    color: #e0e0e0;
+    align-self: flex-start;
+    border: 1px solid #2e2e2e;
+    border-bottom-left-radius: 2px;
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 10px;
+    background: #000;
+    border-top: 1px solid #222;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 10px;
+    background: #181818;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 6px;
+    outline: none;
+    font-size: 0.85rem;
+}
+
+.chat-input-area input:focus {
+    border-color: #d4af37;
+}
+
+.chat-input-area button {
+    background: #d4af37;
+    color: #000;
+    border: none;
+    padding: 0 15px;
+    margin-left: 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+/* === Modal de Reservas === */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #1f1d18 0%, #121210 100%);
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.9), inset 0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #a0a0a0;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.modal-title {
+    font-family: 'Cinzel', serif;
+    color: #d4af37;
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.form-group-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-group-row .form-group {
+    flex: 1;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    color: #cccccc;
+    font-weight: 600;
+}
+
+.form-group input {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #d4af37;
+}
+
+.btn-confirmar-reserva {
+    width: 100%;
+    background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+    color: #000;
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}

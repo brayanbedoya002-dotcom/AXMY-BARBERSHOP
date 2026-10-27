@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXMY Barber Shop | Catálogo y Reservas</title>
+    <!-- Google Fonts para tipografía premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Estilos CSS externos -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Encabezado / Navegación Superior -->
+    <header class="navbar">
+        <div class="logo-container">
+            <svg class="scissors-icon" viewBox="0 0 100 100" fill="currentColor">
+                <!-- Mango / Ojos de las tijeras -->
+                <circle cx="28" cy="82" r="11" stroke="url(#gold-grad)" stroke-width="3" fill="none"/>
+                <circle cx="72" cy="82" r="11" stroke="url(#gold-grad)" stroke-width="3" fill="none"/>
+                <!-- Hoja Izquierda -->
+                <path d="M 33 73 L 50 40 L 78 12 C 79 10, 77 8, 75 9 L 48 30 L 33 73 Z" fill="url(#gold-grad)"/>
+                <!-- Hoja Derecha -->
+                <path d="M 67 73 L 50 40 L 22 12 C 21 10, 23 8, 25 9 L 52 30 L 67 73 Z" fill="url(#gold-grad)"/>
+                <!-- Perno central de las tijeras -->
+                <circle cx="50" cy="40" r="3.5" fill="#ffffff"/>
+                <!-- Travesaño horizontal -->
+                <rect x="36" y="52" width="28" height="3" fill="url(#gold-grad)" rx="1.5"/>
+                <!-- Gradiente de oro para el SVG -->
+                <defs>
+                    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f5e0a3" />
+                        <stop offset="50%" stop-color="#d4af37" />
+                        <stop offset="100%" stop-color="#aa7c11" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="brand-text">
+                <span class="brand-name">AXMY</span>
+                <span class="brand-sub">BARBER SHOP</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="icon-btn" title="Buscar">🔍</button>
+            <button class="btn-reservar-top" onclick="toggleChat(true)">RESERVAR</button>
+        </div>
+    </header>
+
+    <!-- Sección Principal / Catálogo y Tienda -->
+    <main class="container">
+        <h1 class="main-title" style="text-align: center; margin-bottom: 10px; font-family: 'Cinzel', serif;">AXMY BARBER SHOP & STORE</h1>
+        <p style="text-align: center; color: #aaa; margin-bottom: 30px;">Selecciona una categoría para explorar nuestros servicios o productos profesionales.</p>
+
+        <!-- Pestañas de Navegación del Catálogo -->
+        <div class="catalog-tabs" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+            <button class="btn-cat-tab active" onclick="filtrarCatalogo('cortes', event)" style="background: #d4af37; color: #000; border: 1px solid #d4af37; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer;">✂️ Cortes y Estilos</button>
+            <button class="btn-cat-tab" onclick="filtrarCatalogo('cabello', event)" style="background: #0a0a0a; color: #d4af37; border: 1px solid #d4af37; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer;">🧴 Productos de Cabello</button>
+            <button class="btn-cat-tab" onclick="filtrarCatalogo('barberos', event)" style="background: #0a0a0a; color: #d4af37; border: 1px solid #d4af37; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer;">🪒 Productos para Barberos</button>
+        </div>
+
+        <!-- Contenedor dinámico donde se cargarán las tarjetas filtradas -->
+        <div class="services-grid" id="servicesGrid">
+            <!-- Las tarjetas se cargarán aquí automáticamente mediante script.js -->
+        </div>
+
+        <!-- Sección de Mis Citas para el Cliente -->
+        <div style="margin-top: 40px; margin-bottom: 30px;">
+            <div style="background: linear-gradient(145deg, #1f1d18 0%, #121210 100%); border: 1px solid #d4af37; padding: 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.9);">
+                <h3 style="color: #d4af37; font-family: 'Cinzel', serif; margin-bottom: 15px; font-size: 1.3rem; text-align: center;">Mis Citas Reservadas</h3>
+                <div id="listaMisCitas">
+                    <p style="color: #888; text-align: center;">Cargando tus citas...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Botón Flotante para Abrir el Chat -->
+    <button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChat()">
+        <span>💈</span> Asistente AXMY
+    </button>
+
+    <!-- Widget Flotante del Chat de IA -->
+    <aside class="chat-widget hidden" id="chatWidget">
+        <div class="chat-header">
+            <div class="chat-title">
+                <span>💈</span> AXMY ASSISTANT
+            </div>
+            <button class="close-chat" onclick="toggleChat(false)">✕</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">¡Hola! 💈 Bienvenido a AXMY Barber Shop. ¿En qué puedo ayudarte hoy? Puedes preguntarme por cortes, precios o agendar tu cita.</div>
+        </div>
+        
+        <form class="chat-input-area" id="chatForm">
+            <input type="text" id="userInput" placeholder="Escribe aquí tu consulta..." required autocomplete="off">
+            <button type="submit">Enviar</button>
+        </form>
+    </aside>
+
+    <!-- Modal de Reserva de Citas -->
+    <div class="modal-overlay hidden" id="modalReserva">
+        <div class="modal-content">
+            <button class="close-modal" onclick="cerrarModal()">✕</button>
+            <h2 class="modal-title">AGENDAR CITA / COMPRA</h2>
+            <form id="formReserva">
+                <div class="form-group">
+                    <label>Servicio / Producto Seleccionado</label>
+                    <input type="text" id="reservaServicio" readonly required>
+                </div>
+                <div class="form-group">
+                    <label>Tu Nombre Completo</label>
+                    <input type="text" id="reservaNombre" placeholder="Ej. Carlos Mendoza" required>
+                </div>
+                <div class="form-group">
+                    <label>Número de Teléfono</label>
+                    <input type="tel" id="reservaTelefono" placeholder="Ej. 300 123 4567" required>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="date" id="reservaFecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora</label>
+                        <input type="time" id="reservaHora" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-confirmar-reserva">CONFIRMAR RESERVA</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lógica JS externa -->
+    <script src="script.js"></script>
+    <script>
+        // Lógica para cargar y cancelar las citas del cliente autenticado
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarMisCitas();
+        });
+
+        async function cargarMisCitas() {
+            try {
+                const token = localStorage.getItem('token');
+                const contenedor = document.getElementById('listaMisCitas');
+                if (!contenedor) return;
+
+                if (!token) {
+                    contenedor.innerHTML = `<p style="color: #888; text-align: center;">Inicia sesión para ver tus citas agendadas.</p>`;
+                    return;
+                }
+
+                const res = await fetch('/api/citas/mis-citas', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                if (data.success && data.citas && data.citas.length > 0) {
+                    contenedor.innerHTML = '';
+                    data.citas.forEach(cita => {
+                        contenedor.innerHTML += `
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; border: 1px solid #333; padding: 12px; margin-bottom: 10px; border-radius: 6px; flex-wrap: wrap; gap: 10px;">
+                                <div>
+                                    <strong style="color: #d4af37; font-size: 1rem;">Servicio: ${cita.servicio}</strong><br>
+                                    <span style="color: #ccc; font-size: 0.9rem;">📅 Fecha: ${cita.fecha} | ⏰ Hora: ${cita.hora}</span>
+                                </div>
+                                <button onclick="cancelarMiCita('${cita._id}')" style="background: #ff4d4d; color: #fff; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 0.85rem;">Cancelar Cita</button>
+                            </div>
+                        `;
+                    });
+                } else {
+                    contenedor.innerHTML = `<p style="color: #888; text-align: center;">No tienes citas agendadas actualmente.</p>`;
+                }
+            } catch (error) {
+                console.error('Error al cargar mis citas:', error);
+            }
+        }
+
+        async function cancelarMiCita(id) {
+            if (!confirm('¿Estás seguro de que deseas cancelar tu cita?')) return;
+
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/citas/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    alert('Cita cancelada con éxito.');
+                    cargarMisCitas(); // Actualizar la lista en pantalla
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error de red:', error);
+                alert('No se pudo conectar con el servidor.');
+            }
+        }
+    </script>
+</body>
+</html>

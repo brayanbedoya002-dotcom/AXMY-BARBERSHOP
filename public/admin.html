@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXMY Admin | Panel de Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-layout {
+            max-width: 900px;
+            margin: 30px auto;
+            background: linear-gradient(145deg, #1f1d18 0%, #121210 100%);
+            border: 1px solid #d4af37;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+        }
+        .admin-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .btn-tab {
+            background: #0a0a0a;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        .btn-tab.active {
+            background: #d4af37;
+            color: #000;
+        }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        .tabla-citas {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .tabla-citas th, .tabla-citas td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .tabla-citas th { color: #d4af37; background: #0a0a0a; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #d4af37; font-size: 0.9rem; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; background: #0a0a0a; color: #fff; border: 1px solid #d4af37; border-radius: 4px; box-sizing: border-box; }
+        .form-group-row { display: flex; gap: 15px; }
+        .form-group-row .form-group { flex: 1; }
+        .btn-confirmar-reserva { width: 100%; background: #d4af37; color: #000; border: none; padding: 12px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #0a0a0a; border-bottom: 1px solid #d4af37;">
+        <div class="logo-container">
+            <span class="brand-name" style="color: #d4af37; font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: bold;">AXMY SUPER ADMIN</span>
+        </div>
+        <button onclick="cerrarSesion()" style="background:none; border:1px solid #d4af37; color:#d4af37; padding:6px 15px; cursor:pointer; border-radius:4px;">Cerrar Sesión</button>
+    </header>
+
+    <main class="container">
+        <div class="admin-layout">
+            <!-- Menú de navegación interno del Admin -->
+            <div class="admin-nav">
+                <button class="btn-tab active" onclick="mostrarSeccion('cortes', event)">Publicar / Nuevo</button>
+                <button class="btn-tab" onclick="mostrarSeccion('inventario', event)">Gestionar / Editar Catálogo</button>
+                <button class="btn-tab" onclick="mostrarSeccion('citas', event)">Ver Citas Reservadas</button>
+            </div>
+
+            <!-- SECCIÓN 1: Publicar o Editar Producto -->
+            <div id="seccion-cortes" class="admin-section active">
+                <h2 id="formTituloLabel" style="font-size: 1.5rem; margin-bottom: 20px; color: #fff;">Publicar en el Catálogo o Tienda</h2>
+                <form id="formAdminCorte">
+                    <input type="hidden" id="editId">
+                    
+                    <div class="form-group">
+                        <label>Título del Servicio o Producto</label>
+                        <input type="text" id="adminTitulo" placeholder="Ej. Fade Clásico o Cera Mate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <input type="text" id="adminDesc" placeholder="Detalles del estilo o ingredientes" required>
+                    </div>
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label>Precio ($)</label>
+                            <input type="number" id="adminPrecio" placeholder="25" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Duración / Stock</label>
+                            <input type="text" id="adminDuracion" placeholder="20 min / 15 unidades" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Sección / Categoría</label>
+                        <select id="adminCategoria" required>
+                            <option value="cortes">Cortes y Estilos (Servicios)</option>
+                            <option value="cabello">Productos de Cabello (Tienda)</option>
+                            <option value="barberos">Productos para Barberos (Tienda)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Seleccionar Imagen desde el Dispositivo</label>
+                        <input type="file" id="adminImagenFile" accept="image/*" style="color: #ccc; padding: 5px 0;">
+                        <input type="hidden" id="adminImagenUrl">
+                    </div>
+                    <button type="submit" id="btnSubmitForm" class="btn-confirmar-reserva" style="margin-top: 15px;">PUBLICAR EN LA WEB</button>
+                    <button type="button" id="btnCancelarEdicion" onclick="resetearFormulario()" style="display:none; width:100%; background:#444; color:#fff; border:none; padding:10px; margin-top:10px; cursor:pointer; border-radius:4px;">Cancelar Edición</button>
+                </form>
+            </div>
+
+            <!-- SECCIÓN 2: Gestionar / Editar Catálogo -->
+            <div id="seccion-inventario" class="admin-section">
+                <h2 style="font-size: 1.5rem; margin-bottom: 20px; color: #fff;">Catálogo Actual (Modificar o Borrar)</h2>
+                <div id="listaInventarioAdmin" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: Ver Citas -->
+            <div id="seccion-citas" class="admin-section">
+                <h2 class="main-title" style="font-size: 1.5rem; margin-bottom: 20px; color: #fff;">Citas de Clientes Registradas</h2>
+                <div style="overflow-x: auto;">
+                    <table class="tabla-citas">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Teléfono</th>
+                                <th>Servicio</th>
+                                <th>Fecha / Hora</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaCitasBody">
+                            <!-- Se llena dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Proteger la vista: si no hay token o no es admin, mandar al login
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const rol = localStorage.getItem('rol');
+            if (!token || rol !== 'admin') {
+                window.location.href = '/login.html';
+            } else {
+                cargarCitas();
+                cargarInventarioAdmin();
+            }
+        });
+
+        function mostrarSeccion(seccion, event) {
+            document.querySelectorAll('.admin-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.btn-tab').forEach(el => el.classList.remove('active'));
+
+            if (seccion === 'cortes') {
+                document.getElementById('seccion-cortes').classList.add('active');
+            } else if (seccion === 'inventario') {
+                document.getElementById('seccion-inventario').classList.add('active');
+                cargarInventarioAdmin();
+            } else if (seccion === 'citas') {
+                document.getElementById('seccion-citas').classList.add('active');
+                cargarCitas();
+            }
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+
+        function cerrarSesion() {
+            localStorage.clear();
+            window.location.href = '/login.html';
+        }
+
+        // Convertir imagen local a Base64
+        document.getElementById('adminImagenFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    document.getElementById('adminImagenUrl').value = uploadEvent.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Cargar citas
+        async function cargarCitas() {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch('/api/citas', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const tbody = document.getElementById('listaCitasBody');
+                
+                if (data.success && data.citas && data.citas.length > 0) {
+                    tbody.innerHTML = '';
+                    data.citas.forEach(c => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${c.nombreCliente || 'Cliente'}</td>
+                                <td>${c.telefono || 'N/A'}</td>
+                                <td>${c.servicio}</td>
+                                <td>${c.fecha} - ${c.hora}</td>
+                                <td>
+                                    <button onclick="eliminarCita('${c._id}')" style="background: #ff4d4d; color: #fff; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 0.8rem;">Cancelar</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No hay citas registradas.</td></tr>`;
+                }
+            } catch (e) {
+                console.error('Error cargando citas', e);
+            }
+        }
+
+        async function eliminarCita(id) {
+            if (!confirm('¿Estás seguro de cancelar esta cita?')) return;
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/citas/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Cita cancelada con éxito.');
+                    cargarCitas();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error de red:', error);
+            }
+        }
+
+        // Cargar inventario para editar o eliminar
+        async function cargarInventarioAdmin() {
+            try {
+                const res = await fetch('/api/estilos');
+                const data = await res.json();
+                const contenedor = document.getElementById('listaInventarioAdmin');
+                
+                if (data.success && data.estilos.length > 0) {
+                    contenedor.innerHTML = '';
+                    data.estilos.forEach(item => {
+                        contenedor.innerHTML += `
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; border: 1px solid #333; padding: 12px; border-radius: 6px;">
+                                <div>
+                                    <strong style="color: #d4af37;">[${item.categoria.toUpperCase()}] ${item.titulo}</strong> - $${item.precio}<br>
+                                    <small style="color: #aaa;">${item.descripcion}</small>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick='prepararEdicion(${JSON.stringify(item)})' style="background: #d4af37; color: #000; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">Editar</button>
+                                    <button onclick="eliminarProducto('${item._id}')" style="background: #ff4d4d; color: #fff; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">Eliminar</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    contenedor.innerHTML = `<p style="text-align: center; color: #888;">No hay productos en el catálogo.</p>`;
+                }
+            } catch (e) {
+                console.error('Error al cargar inventario', e);
+            }
+        }
+
+        function prepararEdicion(item) {
+            document.getElementById('editId').value = item._id;
+            document.getElementById('adminTitulo').value = item.titulo;
+            document.getElementById('adminDesc').value = item.descripcion;
+            document.getElementById('adminPrecio').value = item.precio;
+            document.getElementById('adminDuracion').value = item.duracion || '';
+            document.getElementById('adminCategoria').value = item.categoria;
+            document.getElementById('adminImagenUrl').value = item.imagenUrl;
+            
+            document.getElementById('formTituloLabel').innerText = 'Actualizar Producto / Servicio';
+            document.getElementById('btnSubmitForm').innerText = 'GUARDAR CAMBIOS';
+            document.getElementById('btnCancelarEdicion').style.display = 'block';
+
+            document.querySelectorAll('.admin-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.btn-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('seccion-cortes').classList.add('active');
+            document.querySelectorAll('.btn-tab')[0].classList.add('active');
+        }
+
+        function resetearFormulario() {
+            document.getElementById('formAdminCorte').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('adminImagenUrl').value = '';
+            document.getElementById('formTituloLabel').innerText = 'Publicar en el Catálogo o Tienda';
+            document.getElementById('btnSubmitForm').innerText = 'PUBLICAR EN LA WEB';
+            document.getElementById('btnCancelarEdicion').style.display = 'none';
+        }
+
+        // Enviar formulario (Crear o Actualizar)
+        document.getElementById('formAdminCorte').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            const editId = document.getElementById('editId').value;
+            const imagenUrl = document.getElementById('adminImagenUrl').value;
+
+            if (!editId && !imagenUrl) {
+                alert('Por favor selecciona una imagen desde tu dispositivo.');
+                return;
+            }
+
+            const productoData = {
+                titulo: document.getElementById('adminTitulo').value,
+                descripcion: document.getElementById('adminDesc').value,
+                precio: Number(document.getElementById('adminPrecio').value),
+                duracion: document.getElementById('adminDuracion').value,
+                categoria: document.getElementById('adminCategoria').value,
+                imagenUrl: imagenUrl || undefined
+            };
+
+            const url = editId ? `/api/estilos/${editId}` : '/api/estilos';
+            const method = editId ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(productoData)
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    alert(editId ? '¡Actualizado con éxito!' : '¡Publicado con éxito!');
+                    resetearFormulario();
+                    cargarInventarioAdmin();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('No se pudo conectar con el servidor.');
+            }
+        });
+
+        async function eliminarProducto(id) {
+            if (!confirm('¿Estás seguro de eliminar este elemento?')) return;
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/estilos/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Eliminado correctamente.');
+                    cargarInventarioAdmin();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (e) {
+                console.error('Error de red:', e);
+            }
+        }
+    </script>
+</body>
+</html>
